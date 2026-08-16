@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { useSearchParams } from "react-router";
-import { Heart } from 'lucide-react';
-import { Star } from 'lucide-react';
-import { Link } from "react-router";
-import { ArrowLeft } from "lucide-react";
-import MovieCard from "./components/MovieCard";
-import ReviewCard from "./components/ReviewCard";
+import { useEffect, useState } from "react";
+import { useSearchParams, Link } from "react-router";
+import { Heart, Star, ArrowLeft  } from 'lucide-react';
+import ReviewCard from "../components/ReviewCard";
 
 function MovieDetails(){
     const [searchParams] = useSearchParams();
@@ -114,7 +109,7 @@ function MovieDetails(){
                 </div>
             </section>
             {/*==== Recommendation ========*/}
-            <section className="recommendations">
+            {/* <section className="recommendations">
                 <h2>Recommendation</h2>
                 <div className="recommendations-grid">
                     {recommendations.map((movie)=>(
@@ -123,7 +118,7 @@ function MovieDetails(){
                                 className="recommendation-card" />
                     ))}
                 </div>
-            </section>
+            </section> */}
             {/*==== Recommendation ========*/}
             <section className="reviews">
                 <h2>Reviews</h2>
