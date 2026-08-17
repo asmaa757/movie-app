@@ -8,6 +8,7 @@ import TVShowDetails from "./pages/TVShowDetails";
 import SearchResults from "./pages/SearchResults";
 import Wishlist from "./pages/Wishlist";
 import AIAssistant from "./pages/AIAssistant";
+import WishlistProvider from "./context/WishlistProvider";
 
 export const router = createBrowserRouter([
     {
@@ -47,7 +48,11 @@ export const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider  router={router} />
+    return(
+        <WishlistProvider>
+            <RouterProvider  router={router} />
+        </WishlistProvider>
+    ) 
 }
 
 export default App;

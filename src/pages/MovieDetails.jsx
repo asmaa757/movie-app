@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router";
-import { Heart, Star, ArrowLeft  } from 'lucide-react';
-import ReviewCard from "../components/ReviewCard";
+import { useEffect, useState, useContext  } from "react";
+import { useSearchParams } from "react-router";
+import { Heart } from 'lucide-react';
+import { Star } from 'lucide-react';
+import { Link } from "react-router";
+import { ArrowLeft } from "lucide-react";
+import MovieCard from "./components/MovieCard";
+import ReviewCard from "./components/ReviewCard";
+import {getMovieDetails,getRecommendations,getMovieReviews} from "./services/movieService";
+import { WishlistContext } from "./contexts/WishlistContext";
+import "./MovieDetails.css";
 
 function MovieDetails(){
     const [searchParams] = useSearchParams();
@@ -9,30 +16,26 @@ function MovieDetails(){
     const [movie , setMovie] = useState(null);
     const [recommendations, setRecommendations] = useState([]);
     const [reviews , setReviews] = useState([]);
-    const [liked, setLiked] = useState(false);
+    const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
     const IMG_URl = "https://image.tmdb.org/t/p/w500";
-    const API_KEY ="ef6076a5b0f5c7aea41ffa3701f78452";
     useEffect(()=>{
-        //====== Movie Details ========
-        fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
-        .then((response)=> response.json()).then((data)=>{
-            setMovie(data)
-        }).catch((error)=>{
-            console.log(error)
+        //========= Details ===========
+        getMovieDetails(id).then((data) => {
+            setMovie(data);
+        }).catch((error) => {
+            console.log(error);
         });
-        //====== Recommendations ========
-        fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${API_KEY}`)
-        .then((response)=> response.json()).then((data)=>{
-            setRecommendations(data.results)
-        }).catch((error)=>{
-            console.log(error)
+        //========= Recommendationns ===========
+        getRecommendations(id).then((data) => {
+            setRecommendations(data.results);
+        }).catch((error) => {
+            console.log(error);
         });
-        //====== Reviews ========
-        fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${API_KEY}`)
-        .then((response)=> response.json()).then((data)=>{
-            setReviews(data.results)
-        }).catch((error)=>{
-            console.log(error)
+        //========= Reviews ===========
+        getMovieReviews(id).then((data) => {
+            setReviews(data.results);
+        }).catch((error) => {
+            console.log(error);
         });
     },[id]);
     if(!movie){
@@ -40,10 +43,10 @@ function MovieDetails(){
     }
     return(
         <div className="movie-details">
-        <Link to="/" className="back-btn">
-            <ArrowLeft size={20} />
-            Back
-        </Link>
+            <Link to="/" className="back-btn">
+                <ArrowLeft size={20} />
+                Back
+            </Link>
             {/*==== Movie Details========*/}
             <section className="movie-info">
                 <div className="movie-poster">
@@ -53,9 +56,9 @@ function MovieDetails(){
                     <div className="movie-header">
                         <h1>{movie.title}</h1>
                         <p>{movie.release_date}</p>
-                        <button onClick={() => setLiked(!liked)}>
-                            <Heart fill={liked ? "red" : "none"}
-                                color={liked ? "red" : "black"}/>
+                        <button onClick={() => toggleWishlist(movie)}>
+                            <Heart fill={isInWishlist(movie.id) ? "red" : "none"}
+                                color={isInWishlist(movie.id) ? "red" : "black"}/>
                         </button>
                     </div>
                     <div className="rating">
@@ -76,8 +79,8 @@ function MovieDetails(){
                     <div className="genres">{movie.genres?.map((genre) => (
                         <span key={genre.id}>{genre.name}</span>
                     ))}
-                   </div>
-                   <div className="movie-meta">
+                    </div>
+                    <div className="movie-meta">
                         <div>
                             <b>Duration:</b>
                             <span>{movie.runtime} Min.</span>
@@ -101,7 +104,6 @@ function MovieDetails(){
                     {movie.homepage && (
                         <a href={movie.homepage}
                             target="_blank"
-                            rel="noreferrer"
                             className="website-btn">
                             Website ↗
                         </a>
@@ -109,7 +111,7 @@ function MovieDetails(){
                 </div>
             </section>
             {/*==== Recommendation ========*/}
-            {/* <section className="recommendations">
+            <section className="recommendations">
                 <h2>Recommendation</h2>
                 <div className="recommendations-grid">
                     {recommendations.map((movie)=>(
@@ -118,7 +120,7 @@ function MovieDetails(){
                                 className="recommendation-card" />
                     ))}
                 </div>
-            </section> */}
+            </section>
             {/*==== Recommendation ========*/}
             <section className="reviews">
                 <h2>Reviews</h2>
