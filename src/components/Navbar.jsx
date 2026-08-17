@@ -5,7 +5,7 @@ function Navbar(){
         <div className="bg-(--primary) py-3 px-6 flex justify-between">
             <Link to={"/"} className="font-bold text-xl">Movie App</Link>
             <div className='flex gap-5 font-semibold'>
-                <Link to={"/"} className='active:text-(--primary)'>Movies</Link>
+                <Link to={"/movies/:id"} className='active:text-(--primary)'>Movies</Link>
                 <span>|</span>
                 <Link to={"tv-shows"} className='active:text-(--primary)'>TV Shows</Link>
                 <span>|</span>

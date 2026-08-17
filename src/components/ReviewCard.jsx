@@ -23,4 +23,4 @@ function ReviewCard({ review }){
         </div>
     )
 }
-export default ReviewCard
+export default ReviewCard;
