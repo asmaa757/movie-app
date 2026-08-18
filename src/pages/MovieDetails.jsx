@@ -1,12 +1,9 @@
 import { useEffect, useState, useContext  } from "react";
-import { useSearchParams } from "react-router";
-import { Heart } from 'lucide-react';
-import { Star } from 'lucide-react';
-import { Link } from "react-router";
-import { ArrowLeft } from "lucide-react";
+import { useSearchParams, Link } from "react-router";
+import { Heart, Star, ArrowLeft } from 'lucide-react';
 import MovieCard from "../components/MovieCard";
 import ReviewCard from "../components/ReviewCard";
-import {getMovieDetails,getRecommendations,getMovieReviews} from "../services/movieService";
+import {getMovieDetails, getRecommendations, getMovieReviews} from "../services/movieService";
 import { WishlistContext } from "../context/WishlistContext";
 import "../MovieDetails.css";
 
