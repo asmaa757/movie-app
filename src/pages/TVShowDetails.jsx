@@ -1,6 +1,7 @@
 function TVShowDetails(){
     return(
         <div>
+            Tv Show Details
         </div>
     )
 }
