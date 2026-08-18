@@ -58,10 +58,10 @@ function AIAssistant() {
   };
 
   return (
-    <div className="h-[calc(95vh-64px)] bg-white flex flex-col">
+    <div className="h-[calc(95vh-64px)] flex flex-col">
       {messages.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center px-4">
-          <h1 className="text-3xl font-semibold text-gray-900 mb-6">
+          <h1 className="text-3xl font-semibold mb-6">
             What can I help with?
           </h1>
 
@@ -77,7 +77,7 @@ function AIAssistant() {
               <button
                 key={s}
                 onClick={() => setInput(s)}
-                className="border border-gray-300 rounded-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                className="border rounded-full px-4 py-2 text-sm hover:bg-(--primary)"
               >
                 {s}
               </button>
@@ -103,8 +103,8 @@ function AIAssistant() {
                   <div
                     className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
                       msg.role === "user"
-                        ? "bg-(--primary) text-black rounded-br-sm"
-                        : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                        ? "bg-(--primary) rounded-br-sm"
+                        : "rounded-bl-sm"
                     }`}
                   >
                     {msg.content}

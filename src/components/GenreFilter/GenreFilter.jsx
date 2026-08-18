@@ -7,8 +7,6 @@ function GenreFilter({
 }) {
   return (
     <div className="genre-filter">
-
-      {/* All */}
       <button
         className={
           selectedGenre === null ? "active" : ""
@@ -17,8 +15,6 @@ function GenreFilter({
       >
         All
       </button>
-
-      {/* Genres */}
       {genres.map((genre) => (
         <button
           key={genre.id}

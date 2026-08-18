@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  FaStar,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 import "./HeroSection.css";
 
 function HeroSection({ movies }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Change movie every 5 seconds
   useEffect(() => {
     if (!movies || movies.length === 0) {
       return;
@@ -83,7 +78,7 @@ function HeroSection({ movies }) {
         <div className="hero-info">
 
           <span>
-            <FaStar />
+            <Star />
             {movie.vote_average
               ? movie.vote_average.toFixed(1)
               : "N/A"}
@@ -104,7 +99,7 @@ function HeroSection({ movies }) {
         onClick={handlePrevious}
         aria-label="Previous movie"
       >
-        <FaChevronLeft />
+        <ChevronLeft />
       </button>
 
       {/* Next Button */}
@@ -113,7 +108,7 @@ function HeroSection({ movies }) {
         onClick={handleNext}
         aria-label="Next movie"
       >
-        <FaChevronRight />
+        <ChevronRight />
       </button>
 
       {/* Dots */}

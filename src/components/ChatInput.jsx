@@ -18,9 +18,8 @@ function ChatInput({
       className="
         w-full max-w-2xl mx-auto
         flex items-center gap-3
-        bg-white
         border border-gray-300
-        focus-within:border-gray-400
+        focus-within:border-(--primary)
         rounded-full px-5 py-3
         shadow-sm
       "
@@ -32,7 +31,7 @@ function ChatInput({
         onKeyDown={handleKeyDown}
         placeholder="Message Movie Assistant..."
         disabled={loading}
-        className="flex-1 outline-none text-[15px] text-gray-800 disabled:opacity-50"
+        className="flex-1 outline-none text-[15px] disabled:opacity-50"
       />
 
       <button
@@ -43,7 +42,7 @@ function ChatInput({
         <SendHorizontal
           className={`w-10 h-10 ${
             input.trim()
-              ? "text-gray-400"
+              ? "text-(--primary)"
               : "text-gray-300"
           }`}
         />

@@ -1,47 +1,46 @@
-import { FaHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react";
 import { IMAGE_BASE_URL } from "../../services/tmdb";
-import { useWishlist } from "../../context/WishlistContext";
+import { useWishlist } from "../../hooks/useWishlist";
 import "./MovieCard.css";
 
 function MovieCard({ movie }) {
-  const navigate = useNavigate();
-
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   const isFavorite = isInWishlist(movie.id);
 
-  const handleMovieClick = () => {
-    navigate(`/movie/${movie.id}`);
-  };
-
   const handleFavoriteClick = (event) => {
+    event.preventDefault();
     event.stopPropagation();
+
     toggleWishlist(movie);
   };
 
   return (
-    <div className="movie-card" onClick={handleMovieClick}>
+    <div className="movie-card">
       <div className="movie-poster">
         {movie.poster_path ? (
-  <img
-    src={`${IMAGE_BASE_URL}${movie.poster_path}`}
-    alt={movie.title}
-  />
-) : (
-  <div className="no-poster">
-    No Image
-  </div>
-)}
+          <img
+            src={`${IMAGE_BASE_URL}${movie.poster_path}`}
+            alt={movie.title}
+          />
+        ) : (
+          <div className="no-poster">
+            No Image
+          </div>
+        )}
 
         <button
+          type="button"
           className={`favorite-btn ${
             isFavorite ? "active" : ""
           }`}
           onClick={handleFavoriteClick}
           aria-label="Add to wishlist"
         >
-          <FaHeart />
+          <Heart
+            fill={isFavorite ? "red" : "none"}
+            color="var(--primary)"
+          />
         </button>
 
         <div className="rating">
