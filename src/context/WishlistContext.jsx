@@ -1,62 +1,40 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
-const WishlistContext = createContext();
-
-function getStoredWishlist() {
-  const storedWishlist = localStorage.getItem("wishlist");
-
-  if (storedWishlist) {
-    return JSON.parse(storedWishlist);
-  }
-
-  return [];
-}
+export const WishlistContext = createContext();
 
 export function WishlistProvider({ children }) {
-  const [wishlist, setWishlist] = useState(getStoredWishlist);
-
-  const toggleWishlist = (movie) => {
-    setWishlist((currentWishlist) => {
-      const exists = currentWishlist.some(
-        (item) => item.id === movie.id
-      );
-
-      let updatedWishlist;
-
-      if (exists) {
-        updatedWishlist = currentWishlist.filter(
-          (item) => item.id !== movie.id
-        );
-      } else {
-        updatedWishlist = [...currentWishlist, movie];
-      }
-
-      localStorage.setItem(
-        "wishlist",
-        JSON.stringify(updatedWishlist)
-      );
-
-      return updatedWishlist;
+    const [wishlist, setWishlist] = useState(() => {
+        const saved = localStorage.getItem("wishlist");
+        return saved ? JSON.parse(saved) : [];
     });
-  };
 
-  const isInWishlist = (movieId) => {
-    return wishlist.some((item) => item.id === movieId);
-  };
+    useEffect(() => {
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    }, [wishlist]);
 
-  return (
-    <WishlistContext.Provider
-      value={{
-        wishlist,
-        toggleWishlist,
-        isInWishlist,
-      }}
-    >
-      {children}
-    </WishlistContext.Provider>
-  );
-}
+    const toggleWishlist = (movie) => {
+        setWishlist((prev) => {
+            const exists = prev.some((item) => item.id === movie.id);
+            if (exists) {
+                return prev.filter((item) => item.id !== movie.id);
+            }
+            return [...prev, movie];
+        });
+    };
 
-export function useWishlist() {
-  return useContext(WishlistContext);
+    const isInWishlist = (movieId) => {
+        return wishlist.some((item) => item.id === movieId);
+    };
+
+    return (
+        <WishlistContext.Provider
+            value={{
+                wishlist,
+                toggleWishlist,
+                isInWishlist,
+            }}
+        >
+            {children}
+        </WishlistContext.Provider>
+    );
 }
