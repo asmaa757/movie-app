@@ -1,7 +1,11 @@
 import { createBrowserRouter } from "react-router"
 import { RouterProvider } from "react-router";
 import MainLayout from "./layouts/MainLayout";
+<<<<<<< HEAD
 import Movies from "./pages/Movies/Movies";
+=======
+import Movies from "./pages/Movies";
+>>>>>>> 595dcc6344db2c7350c8e7cf69b9967699811962
 import MovieDetails from "./pages/MovieDetails";
 import TVShows from "./pages/TVShows";
 import TVShowDetails from "./pages/TVShowDetails";
