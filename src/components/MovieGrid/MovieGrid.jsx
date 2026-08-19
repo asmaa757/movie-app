@@ -6,7 +6,7 @@ function MovieGrid({ movies = [] }) {
   return (
     <div className="movie-grid">
       {movies.map((movie) => (
-        <Link to={`movies/${movie.id}`}>
+        <Link to={`/movies/${movie.id}`}>
           <MovieCard
             key={movie.id}
             movie={movie}
