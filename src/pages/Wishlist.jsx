@@ -24,8 +24,8 @@ function Wishlist() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {wishlist.map((movie) => (
+            <Link key={movie.id} to={`/movies/${movie.id}`}>
             <div
-              key={movie.id}
               className="flex border border-(--primary) rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
             >
              
@@ -42,8 +42,12 @@ function Wishlist() {
                     {movie.title}
                   </h2>
                   <button
-                    onClick={() => toggleWishlist(movie)}
-                    className="border-none bg-transparent cursor-pointer p-1 transition-transform hover:scale-115 "
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(movie);
+                    }}
+                    className="border-none bg-transparent cursor-pointer p-1 transition-transform hover:scale-115"
                   >
                     <Heart
                       fill="var(--primary)"
@@ -77,11 +81,12 @@ function Wishlist() {
                   </span>
                 </div>
 
-                <p className=" mt-3 leading-relaxed">
+                <p className=" mt-3 leading-relaxed line-clamp-3">
                   {movie.overview}
                 </p>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       )}

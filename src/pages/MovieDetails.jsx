@@ -25,7 +25,6 @@ function MovieDetails() {
 
     //========= Details ===========
     useEffect(() => {
-        setMovie(null);
         getMovieDetails(id)
           .then((data) => {
             setMovie(data);
@@ -134,7 +133,8 @@ function MovieDetails() {
             {movie.overview}
           </p>
 
-          {/* Genres */}<div className="flex flex-wrap gap-2 sm:gap-3 my-5 mb-8">
+          {/* Genres */}
+          <div className="flex flex-wrap gap-2 sm:gap-3 my-5 mb-8">
             {movie.genres?.map((genre) => (
               <span
                 key={genre.id}
