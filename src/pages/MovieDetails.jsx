@@ -1,53 +1,57 @@
 import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router";
 import { Heart, Star, ArrowLeft, Link as LinkIcon} from "lucide-react";
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/MovieCard/MovieCard";
 import ReviewCard from "../components/ReviewCard";
+import Pagination from "../components/Pagination/Pagination"
 import {
-  getMovieDetails,
-  getRecommendations,
-  getMovieReviews,
+    getMovieDetails,
+    getRecommendations,
+    getMovieReviews,
 } from "../services/movieService";
 import { WishlistContext } from "../contexts/WishlistContext";
 
 function MovieDetails() {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [recommendations, setRecommendations] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
-  const IMG_URL = "https://image.tmdb.org/t/p/w500";
+    const { id } = useParams();
+    const [movie, setMovie] = useState(null);
+    const [recommendations, setRecommendations] = useState([]);
+    const [reviews, setReviews] = useState([]);
+    const [reviewPage, setReviewPage] = useState(1);
+    const [totalReviewPages, setTotalReviewPages] = useState(1);
+    const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
+    const IMG_URL = "https://image.tmdb.org/t/p/w500";
 
-  useEffect(() => {
+    useEffect(() => {
     //========= Details ===========
     getMovieDetails(id)
-      .then((data) => {
+    .then((data) => {
         setMovie(data);
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.log(error);
-      });
+    });
     //========= Recommendations ===========
     getRecommendations(id)
-      .then((data) => {
+    .then((data) => {
         setRecommendations(data.results || []);
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         console.log(error);
-      });
+    });
     //========= Reviews ===========
     getMovieReviews(id)
-      .then((data) => {
+    .then((data) => {
         setReviews(data.results || []);
-      })
-      .catch((error) => {
+        setTotalReviewPages(data.total_pages);
+    })
+    .catch((error) => {
         console.log(error);
-      });
-  }, [id]);
+    });
+    }, [id , reviewPage]);
 
-  if (!movie) {
-    return <p className="mt-20 text-center">Loading...</p>;
-  }
+    if (!movie) {
+        return <p className="mt-20 text-center">Loading...</p>;
+    }
 
   return (
     <div className="w-full mx-auto px-5 py-8">
@@ -177,6 +181,7 @@ function MovieDetails() {
               className="w-full [&_img]:w-full [&_img]:h-67.5 [&_img]:object-cover [&_img]:rounded-lg"
             />
           ))}
+          
         </div>
       </section>
 
@@ -190,6 +195,11 @@ function MovieDetails() {
             <ReviewCard key={review.id} review={review} />
           ))}
         </div>
+        <Pagination
+                currentPage={reviewPage}
+                totalPages={totalReviewPages}
+                onPageChange={setReviewPage}
+        />
       </section>
     </div>
   );
