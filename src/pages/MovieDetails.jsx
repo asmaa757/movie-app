@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router";
 import { Heart, Star, ArrowLeft, Link as LinkIcon} from "lucide-react";
-import MovieCard from "../components/MovieCard/MovieCard";
+import MovieGrid from "../components/MovieGrid/MovieGrid";
 import ReviewCard from "../components/ReviewCard";
 import Pagination from "../components/Pagination/Pagination"
 import {
@@ -16,38 +16,57 @@ function MovieDetails() {
     const [movie, setMovie] = useState(null);
     const [recommendations, setRecommendations] = useState([]);
     const [reviews, setReviews] = useState([]);
-    const [reviewPage, setReviewPage] = useState(1);
-    const [totalReviewPages, setTotalReviewPages] = useState(1);
+    const [recommendationPage, setRecommendationPage] = useState(1);
+    const [totalRecommendationPages, setTotalRecommendationPages] = useState(1);
+    const [recommendationLoading, setRecommendationLoading] = useState(false);
     const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
     const IMG_URL = "https://image.tmdb.org/t/p/w500";
+    
 
-    useEffect(() => {
     //========= Details ===========
-    getMovieDetails(id)
-    .then((data) => {
-        setMovie(data);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    useEffect(() => {
+        setMovie(null);
+        getMovieDetails(id)
+          .then((data) => {
+            setMovie(data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }, [id]);
+    
     //========= Recommendations ===========
-    getRecommendations(id)
-    .then((data) => {
-        setRecommendations(data.results || []);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    useEffect(() => {
+        setRecommendationLoading(true);
+        getRecommendations(id, recommendationPage)
+          .then((data) => {
+            setRecommendations(data.results || []);
+            setTotalRecommendationPages(data.total_pages || 1);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            setRecommendationLoading(false);
+          });
+    }, [id, recommendationPage]);
+
     //========= Reviews ===========
-    getMovieReviews(id)
-    .then((data) => {
-        setReviews(data.results || []);
-        setTotalReviewPages(data.total_pages);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-    }, [id , reviewPage]);
+    useEffect(() => {
+        getMovieReviews(id)
+          .then((data) => {
+            setReviews(data.results || []);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }, [id]);
+
+    //========= Reset ===========
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        setRecommendationPage(1);
+    }, [id]);
 
     if (!movie) {
         return <p className="mt-20 text-center">Loading...</p>;
@@ -56,13 +75,13 @@ function MovieDetails() {
   return (
     <div className="w-full mx-auto px-5 py-8">
       {/* Back Button */}
-      <Link
-        to="/"
+      <button 
+        onClick={() => window.history.back()}
         className="inline-flex items-center gap-2 hover:text-(--primary) text-base font-medium mb-6 transition-colors"
       >
         <ArrowLeft size={20} />
         Back
-      </Link>
+      </button>
 
       {/*==== Movie Details Section ====*/}
       <section className="flex flex-col md:flex-row gap-6 md:gap-9 pb-10 border-b border-gray-200">
@@ -173,34 +192,38 @@ function MovieDetails() {
         <h2 className="text-3xl sm:text-[38px] font-bold mb-6">
           Recommendation
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5.5">
-          {recommendations.map((item) => (
-            <MovieCard
-              key={item.id}
-              movie={item}
-              className="w-full [&_img]:w-full [&_img]:h-67.5 [&_img]:object-cover [&_img]:rounded-lg"
+        {recommendationLoading ? (
+          <p className="text-center py-10">Loading...</p>
+          ) : (
+              <MovieGrid movies={recommendations} />
+          )}
+        {recommendations.length > 0 && totalRecommendationPages > 1 && (
+            <Pagination
+                currentPage={recommendationPage}
+                totalPages={totalRecommendationPages}
+                onPageChange={setRecommendationPage}
             />
-          ))}
-          
-        </div>
+        )}
       </section>
 
       {/*==== Reviews Section ====*/}
       <section className="mt-12.5 pt-9 border-t border-gray-200">
-        <h2 className="text-3xl sm:text-[36px] font-bold mb-6">
-          Reviews
-        </h2>
-        <div className="flex flex-col gap-5">
-          {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
-        </div>
-        <Pagination
-                currentPage={reviewPage}
-                totalPages={totalReviewPages}
-                onPageChange={setReviewPage}
-        />
-      </section>
+  <h2 className="text-3xl sm:text-[36px] font-bold mb-6">
+    Reviews
+  </h2>
+
+  {reviews.length > 0 ? (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+      {reviews.map((review) => (
+        <ReviewCard key={review.id} review={review} />
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500">
+      No reviews available.
+    </p>
+  )}
+</section>
     </div>
   );
 }

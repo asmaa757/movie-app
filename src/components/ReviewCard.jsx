@@ -1,6 +1,10 @@
+import { useState } from "react";
 function ReviewCard({ review }){
+    const [isExpanded, setIsExpanded] = useState(false);
+    const isLongReview = review.content?.length > 300;
     return(
-        <div className="bg-[#1c1c1c] border border-[#2d2d2d] rounded-xl p-5">
+        <div className={`bg-[#1c1c1c] border border-[#2d2d2d] rounded-xl p-5 ${
+                isExpanded ? "" : "h-80"} flex flex-col`}>
             {/* Header */}
             <div className="flex justify-between items-start gap-4 mb-4">
                 {/* User */}
@@ -23,9 +27,20 @@ function ReviewCard({ review }){
                 )}
             </div>
             {/* Review */}
-            <p className="text-gray-300 leading-7">
-                {review.content}
-            </p>
+            <div className={`${isExpanded ? ""
+                        : "max-h-40 overflow-hidden"  }`}>
+                <p className="text-gray-300 leading-7">
+                    {review.content}
+                </p>
+            </div>
+            {/* Read More / Show Less */}
+            {isLongReview && (
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="mt-auto text-[#ef1b23] font-medium hover:underline text-left">
+                    {isExpanded ? "Show less" : "Read more"}
+                </button>
+            )}
         </div>
     )
 }
