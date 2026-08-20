@@ -23,3 +23,9 @@ export const getTVShowRecommendations = async (id) => {
     const data = await response.json();
     return data;
 };
+
+export const searchTVShows = async (query, page = 1) => {
+    const response = await fetch(`${BASE_URL}/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}`);
+    const data = await response.json();
+    return data;
+};

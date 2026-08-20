@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SearchBar.css";
 
-function SearchBar() {
+function SearchBar({ type = "movie" }) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
@@ -13,14 +13,14 @@ function SearchBar() {
       return;
     }
 
-    navigate(`/search?query=${encodeURIComponent(query.trim())}`);
+    navigate(`/search?query=${encodeURIComponent(query.trim())}&type=${type}`);
   };
 
   return (
     <form className="search-bar" onSubmit={handleSearch}>
       <input
         type="text"
-        placeholder="Search for movies..."
+        placeholder={type === "tv" ? "Search for TV shows..." : "Search for movies..."}
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />

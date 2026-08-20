@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SearchBar from "../components/SearchBar/SearchBar";
 import MovieGrid from "../components/MovieGrid/MovieGrid";
 import Pagination from "../components/Pagination/Pagination";
 import { getPopularTVShows } from "../services/tvServiice";
@@ -36,6 +37,8 @@ function TVShows() {
 
   return (
     <main className="w-full min-h-screen bg-[#141414] box-border sm:px-5 sm:py-3 md:px-5 md:py-3">
+      <SearchBar type="tv" />
+
       {error && (
         <p className="min-h-75 flex items-center justify-center text-[#e50914] text-lg m-0">
           {error}
