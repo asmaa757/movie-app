@@ -5,9 +5,9 @@ function getMovieDetails(id) {
         `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
     ).then((response) => response.json());
 }
-function getRecommendations(id) {
+function getRecommendations(id, page = 1) {
     return fetch(
-        `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${API_KEY}`
+        `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${API_KEY}&page=${page}`
     ).then((response) => response.json());
 }
 function getMovieReviews(id) {

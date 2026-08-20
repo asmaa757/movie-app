@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { Heart, Star } from "lucide-react";
-import MovieCard from "../components/MovieCard";
+import MovieCard from "../components/MovieCard/MovieCard";
 import { getTVShowDetails, getTVShowRecommendations } from "../services/tvServiice";
-import { IMAGE_BASE_URL } from "../../services/tmdb";
-import { WishlistContext } from "../context/WishlistContext";
+import { IMAGE_BASE_URL } from "../services/tmdb";
+import { WishlistContext } from "../contexts/WishlistContext";
 
 function TVShowDetails() {
     const { id } = useParams();
@@ -144,7 +144,9 @@ function TVShowDetails() {
             <h2 className="text-2xl font-bold mb-6">Recommendations</h2>
              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {recommendations.slice(0, 6).map((rec) => (
-                    <MovieCard key={rec.id} movie={rec} />
+                    <Link key={rec.id} to={`/tv-shows/${rec.id}`}>
+                        <MovieCard movie={rec} />
+                    </Link>
                 ))}
             </div>
         </div>

@@ -8,7 +8,7 @@ import TVShowDetails from "./pages/TVShowDetails";
 import SearchResults from "./pages/SearchResults";
 import Wishlist from "./pages/Wishlist";
 import AIAssistant from "./pages/AIAssistant";
-import {WishlistProvider} from "./context/WishlistContext";
+import WishlistProvider from "./contexts/WishlistProvider";
 
 export const router = createBrowserRouter([
     {
