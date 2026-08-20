@@ -1,37 +1,77 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import MovieCard from "../components/MovieCard/MovieCard";
+import MovieGrid from "../components/MovieGrid/MovieGrid";
+import Pagination from "../components/Pagination/Pagination";
 import { getPopularTVShows } from "../services/tvServiice";
-function TVShows(){
-const [shows, setShows] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        getPopularTVShows()
-            .then((data) => {
-                setShows(data.results || data);
-                setLoading(false);              
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, []);
+function TVShows() {
+  const [shows, setShows] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    if (loading) return <div className="text-center mt-20">Loading...</div>;
+  useEffect(() => {
+    setLoading(true);
+    setError("");
 
-    return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6">Popular TV Shows</h1>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {shows.map((show) => (
-                    <Link key={show.id} to={`/tv-shows/${show.id}`}>
-                        <MovieCard movie={show} />
-                    </Link>
-                ))}
-            </div>
-        </div>
-    );
+    getPopularTVShows(currentPage)
+      .then((data) => {
+        setShows(data.results || []);
+        setTotalPages(data.total_pages || 1);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch TV shows:", err);
+        setError("Failed to load TV shows.");
+        setShows([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <main className="w-full min-h-screen bg-[#141414] box-border sm:px-5 sm:py-3 md:px-5 md:py-3">
+      {error && (
+        <p className="min-h-75 flex items-center justify-center text-[#e50914] text-lg m-0">
+          {error}
+        </p>
+      )}
+
+      {loading && (
+        <p className="min-h-75 flex items-center justify-center text-white text-lg m-0">
+          Loading TV shows...
+        </p>
+      )}
+
+      {!loading && !error && shows.length > 0 && (
+        <section className="w-full mt-9 md:mt-7.5">
+          <h2 className="text-[#e50914] font-bold m-0 mb-5 text-[19px] sm:text-[21px] md:text-2xl">
+            Popular TV Shows
+          </h2>
+          <MovieGrid movies={shows} basePath="/tv-shows" />
+        </section>
+      )}
+
+      {!loading && !error && shows.length > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+
+      {!loading && !error && shows.length === 0 && (
+        <p className="min-h-75 flex items-center justify-center text-white text-lg m-0">
+          No TV shows found.
+        </p>
+      )}
+    </main>
+  );
 }
-export default TVShows;
 
+export default TVShows;

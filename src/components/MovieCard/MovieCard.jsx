@@ -7,6 +7,8 @@ function MovieCard({ movie }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   const isFavorite = isInWishlist(movie.id);
+  const title = movie.title || movie.name;
+  const releaseDate = movie.release_date || movie.first_air_date;
 
   const handleFavoriteClick = (event) => {
     event.preventDefault();
@@ -21,7 +23,7 @@ function MovieCard({ movie }) {
         {movie.poster_path ? (
           <img
             src={`${IMAGE_BASE_URL}${movie.poster_path}`}
-            alt={movie.title}
+            alt={title}
           />
         ) : (
           <div className="no-poster">
@@ -49,11 +51,11 @@ function MovieCard({ movie }) {
       </div>
 
       <div className="movie-info">
-        <h2>{movie.title}</h2>
+        <h2>{title}</h2>
 
         <p>
-          {movie.release_date
-            ? new Date(movie.release_date).toLocaleDateString(
+          {releaseDate
+            ? new Date(releaseDate).toLocaleDateString(
                 "en-US",
                 {
                   month: "short",
