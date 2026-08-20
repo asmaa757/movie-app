@@ -17,6 +17,7 @@ function MovieDetails() {
     const [recommendations, setRecommendations] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [recommendationPage, setRecommendationPage] = useState(1);
+    const [loading, setLoading] = useState(true);
     const [totalRecommendationPages, setTotalRecommendationPages] = useState(1);
     const [recommendationLoading, setRecommendationLoading] = useState(false);
     const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
@@ -25,12 +26,15 @@ function MovieDetails() {
 
     //========= Details ===========
     useEffect(() => {
+        setLoading(true);
         getMovieDetails(id)
           .then((data) => {
             setMovie(data);
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
+            setLoading(false);
           });
     }, [id]);
     
@@ -41,6 +45,7 @@ function MovieDetails() {
           .then((data) => {
             setRecommendations(data.results || []);
             setTotalRecommendationPages(data.total_pages || 1);
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
@@ -66,10 +71,9 @@ function MovieDetails() {
         window.scrollTo(0, 0);
         setRecommendationPage(1);
     }, [id]);
-
-    if (!movie) {
-        return <p className="mt-20 text-center">Loading...</p>;
-    }
+    
+    if (loading) return <p className="mt-20 text-center">Loading...</p>;
+    if (!movie) return <p className="mt-20 text-center">Movie not found</p>;
 
   return (
     <div className="w-full mx-auto px-5 py-8">
