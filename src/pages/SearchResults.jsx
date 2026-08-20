@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import { ArrowLeft } from "lucide-react";
 import MovieGrid from "../components/MovieGrid/MovieGrid";
 import Pagination from "../components/Pagination/Pagination";
 import { searchMovies } from "../services/tmdb";
@@ -54,6 +55,14 @@ function SearchResults() {
 
   return (
     <main className="w-full min-h-screen bg-[#141414] box-border sm:px-5 sm:py-3 md:px-5 md:py-3">
+      <Link
+        to={type === "tv" ? "/tv-shows" : "/"}
+        className="inline-flex items-center gap-2 text-white hover:text-(--primary) text-base font-medium mb-6 no-underline transition-colors"
+      >
+        <ArrowLeft size={20} />
+        Back to {type === "tv" ? "TV Shows" : "Movies"}
+      </Link>
+
       <h2 className="text-[#e50914] font-bold m-0 mb-5 text-[19px] sm:text-[21px] md:text-2xl">
         {query ? `Search results for "${query}"` : "Search"}
       </h2>

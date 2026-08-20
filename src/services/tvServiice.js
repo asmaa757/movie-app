@@ -29,3 +29,15 @@ export const searchTVShows = async (query, page = 1) => {
     const data = await response.json();
     return data;
 };
+
+export const getTVGenres = async () => {
+    const response = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`);
+    const data = await response.json();
+    return data;
+};
+
+export const getTVShowsByGenre = async (genreId, page = 1) => {
+    const response = await fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`);
+    const data = await response.json();
+    return data;
+};
