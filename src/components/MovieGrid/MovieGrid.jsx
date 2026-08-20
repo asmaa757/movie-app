@@ -2,15 +2,12 @@ import MovieCard from "../MovieCard/MovieCard";
 import { Link } from "react-router";
 import "./MovieGrid.css";
 
-function MovieGrid({ movies = [] }) {
+function MovieGrid({ movies = [], basePath = "/movies" }) {
   return (
     <div className="movie-grid">
       {movies.map((movie) => (
-        <Link to={`/movies/${movie.id}`}>
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-          />
+        <Link key={movie.id} to={`${basePath}/${movie.id}`}>
+          <MovieCard movie={movie} />
         </Link>
       ))}
     </div>

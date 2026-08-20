@@ -1,0 +1,43 @@
+const API_KEY = "d554648f63abde301739d44c50e826a9";
+const BASE_URL = "https://api.themoviedb.org/3";
+export const getPopularTVShows = async (page = 1) => {
+    const response = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&page=${page}`);
+    const data = await response.json();
+    return data;
+};
+
+export const searchMoviesAndTV = async (query, page = 1) => {
+    const response = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}&page=${page}`);
+    const data = await response.json();
+    return data;
+};
+
+export const getTVShowDetails = async (id) => {
+    const response = await fetch(`${BASE_URL}/tv/${id}?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data;
+};
+
+export const getTVShowRecommendations = async (id) => {
+    const response = await fetch(`${BASE_URL}/tv/${id}/recommendations?api_key=${API_KEY}`);
+    const data = await response.json();
+    return data;
+};
+
+export const searchTVShows = async (query, page = 1) => {
+    const response = await fetch(`${BASE_URL}/search/tv?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}`);
+    const data = await response.json();
+    return data;
+};
+
+export const getTVGenres = async () => {
+    const response = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=en-US`);
+    const data = await response.json();
+    return data;
+};
+
+export const getTVShowsByGenre = async (genreId, page = 1) => {
+    const response = await fetch(`${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=${genreId}&page=${page}`);
+    const data = await response.json();
+    return data;
+};

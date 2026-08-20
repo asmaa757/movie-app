@@ -56,6 +56,22 @@ export async function getMoviesByGenre(
 }
 
 // ==========================================
+// Search Movies
+// ==========================================
+
+export async function searchMovies(query, page = 1) {
+  const response = await fetch(
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&page=${page}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to search movies");
+  }
+
+  return response.json();
+}
+
+// ==========================================
 // Export
 // ==========================================
 
