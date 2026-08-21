@@ -21,7 +21,6 @@ function TVShows() {
   useEffect(() => {
     const fetchShows = async () => {
       try {
-        setLoading(true);
         setError("");
 
         const data =

@@ -15,7 +15,6 @@ function TVShowDetails() {
     const { toggleWishlist, isInWishlist } = useContext(WishlistContext);
 
     useEffect(() => {
-        setLoading(true);
         Promise.all([
             getTVShowDetails(id),
             getTVShowRecommendations(id),

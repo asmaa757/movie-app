@@ -26,7 +26,6 @@ function MovieDetails() {
 
     //========= Details ===========
     useEffect(() => {
-        setLoading(true);
         getMovieDetails(id)
           .then((data) => {
             setMovie(data);
