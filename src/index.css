@@ -2,8 +2,97 @@
 
 :root {
   --primary: #e50914;
+  --primary-hover: #b20710;
+  --on-primary: #f5f5f5;
+
+  --bg: #16171a;
+  --bg-secondary: #1e2023;
+  --bg-card: #1c1e21;
+  --bg-footer: #131417;
+  --bg-placeholder: #26282c;
+
+  --border: #2a2c30;
+  --border-filter: #3d4046;
+
+  --text: #ededec;
+  --text-secondary: #a8abb1;
+  --text-muted: #7a7d84;
+  --text-copyright: #6a6d73;
+
+  --glass-bg: rgba(15, 16, 18, 0.6);
+  --navbar-bg: rgba(15, 16, 18, 0.6);
+
+  --button-disabled: #4a4d53;
+
+  --review-border: #2e3034;
+  --review-accent: #e5484d;
+  --review-text: #c7c9cd;
+
+  --text-hero: #d4d5d8;
+  --hero-button-bg: rgba(20, 21, 24, 0.65);
+  --hero-overlay: rgba(10, 11, 13, 0.85);
+  --hero-overlay-mid: rgba(10, 11, 13, 0.5);
+  --hero-overlay-light: rgba(10, 11, 13, 0.1);
+
+  --chat-assistant-bg: #1c1e21;
+  --chat-assistant-text: #ededec;
+
+  --error-bg: #2a1a1a;
+  --error-border: #5c2c2c;
+  --error-text: #f28b8b;
+
+  --quota-bg: #202226;
+  --quota-border: #2e3136;
+  --quota-text: #93969c;
+
+  --heart-off:#72716e;
 }
-body{
-  background-color: #141414;
-  color: white;
+
+:root.light {
+  --bg: #faf9f7;
+  --bg-secondary: #f0efec;
+  --bg-card: #f5f4f1;
+  --bg-footer: #f0efec;
+  --bg-placeholder: #e8e7e3;
+
+  --border: #e2e0db;
+  --border-filter: #d3d1cb;
+
+  --text: #24231f;
+  --text-secondary: #5c5a54;
+  --text-muted: #8a8880;
+  --text-copyright: #96938b;
+
+  --glass-bg: rgba(240, 239, 236, 0.6);
+  --navbar-bg: rgba(240, 239, 236, 0.6);
+
+  --button-disabled: #d6d4ce;
+
+  --review-border: #e2e0db;
+  --review-accent: #d43b40;
+  --review-text: #524f49;
+
+  --text-hero: #f0efec;
+  --hero-button-bg: rgba(250, 249, 247, 0.4);
+  --hero-overlay: rgba(30, 28, 24, 0.45);
+  --hero-overlay-mid: rgba(30, 28, 24, 0.18);
+  --hero-overlay-light: rgba(30, 28, 24, 0.03);
+
+  --chat-assistant-bg: #f5f4f1;
+  --chat-assistant-text: #24231f;
+
+  --error-bg: #fbf0ef;
+  --error-border: #edc2bf;
+  --error-text: #b4423f;
+
+  --quota-bg: #f0efec;
+  --quota-border: #e2e0db;
+  --quota-text: #83807a;
+
+  --heart-off:#d6d5d2;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
 }

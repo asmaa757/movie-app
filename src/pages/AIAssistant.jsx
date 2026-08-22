@@ -35,15 +35,23 @@ function AIAssistant() {
 
     try {
       const reply = await sendMessageToAssistant(updated);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: reply },
+      ]);
     } catch (err) {
       console.error("Assistant error:", err);
+
       if (err.message.includes("429")) {
         setIsQuotaError(true);
-        setError("We've reached the maximum number of requests allowed at the moment. Please try again later!");
+        setError(
+          "We've reached the maximum number of requests allowed at the moment. Please try again later!"
+        );
       } else {
         setIsQuotaError(false);
-        setError("Something went wrong while getting a response. Please try again.");
+        setError(
+          "Something went wrong while getting a response. Please try again."
+        );
       }
     } finally {
       setLoading(false);
@@ -77,7 +85,8 @@ function AIAssistant() {
               <button
                 key={s}
                 onClick={() => setInput(s)}
-                className="border rounded-full px-4 py-2 text-sm hover:bg-(--primary)"
+                className="border border-(--border-filter) rounded-full px-4 py-2 text-sm text-(--text-secondary)
+                hover:bg-(--primary) hover:text-(--on-primary)"
               >
                 {s}
               </button>
@@ -87,7 +96,9 @@ function AIAssistant() {
           {error && (
             <p
               className={`mt-4 text-sm text-center ${
-                isQuotaError ? "text-gray-500" : "text-red-600"
+                isQuotaError
+                  ? "text-(--quota-text)"
+                  : "text-(--error-text)"
               }`}
             >
               {error}
@@ -99,33 +110,44 @@ function AIAssistant() {
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <div className="max-w-2xl mx-auto space-y-3">
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div
+                  key={i}
+                  className={`flex ${
+                    msg.role === "user"
+                      ? "justify-end"
+                      : "justify-start"
+                  }`}
+                >
                   <div
                     className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
                       msg.role === "user"
-                        ? "bg-(--primary) rounded-br-sm"
-                        : "rounded-bl-sm"
+                        ? "bg-(--primary) text-(--on-primary) rounded-br-sm"
+                        : "bg-(--chat-assistant-bg) text-(--chat-assistant-text) rounded-bl-sm"
                     }`}
                   >
                     {msg.content}
                   </div>
                 </div>
-              ))}{loading && (
-                <div className="bg-gray-100 text-gray-500 text-sm px-4 py-2 rounded-2xl rounded-bl-sm w-fit">
+              ))}
+
+              {loading && (
+                <div className="bg-(--bg-secondary) text-(--text-muted) text-sm px-4 py-2 rounded-2xl rounded-bl-sm w-fit">
                   Typing...
                 </div>
               )}
+
               {error && (
                 <div
                   className={`text-center text-sm rounded-lg py-2 px-3 border ${
                     isQuotaError
-                      ? "text-gray-600 bg-gray-50 border-gray-200"
-                      : "text-red-600 bg-red-50 border-red-200"
+                      ? "text-(--quota-text) bg-(--quota-bg) border-(--quota-border)"
+                      : "text-(--error-text) bg-(--error-bg) border-(--error-border)"
                   }`}
                 >
                   {error}
                 </div>
               )}
+
               <div ref={endRef} />
             </div>
           </div>
@@ -143,4 +165,5 @@ function AIAssistant() {
     </div>
   );
 }
+
 export default AIAssistant;
