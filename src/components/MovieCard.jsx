@@ -38,7 +38,6 @@ function MovieCard({ movie }) {
           </div>
         )}
 
-        {/* Wishlist Button */}
         <button
           type="button"
           className={`absolute top-2.5 right-2.5 w-9.5 h-9.5 border-none 
@@ -56,7 +55,6 @@ function MovieCard({ movie }) {
           />
         </button>
 
-        {/* Rating */}
         <div
           className="absolute bottom-1.25 left-1.25 w-11.25 h-11.25 
           rounded-full bg-(--glass-bg) backdrop-blur-sm border-[3px] 
@@ -67,7 +65,6 @@ function MovieCard({ movie }) {
         </div>
       </div>
 
-      {/* Movie Info */}
       <div className="pt-7 px-3 pb-3">
         <h2
           className="text-(--text) text-base mb-2 whitespace-nowrap 

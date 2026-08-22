@@ -10,9 +10,7 @@ function ReviewCard({ review }) {
         isExpanded ? "" : "h-80"
       } flex flex-col`}
     >
-      {/* Header */}
       <div className="flex justify-between items-start gap-4 mb-4">
-        {/* User */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-(--review-accent) text-(--text) flex items-center justify-center font-bold">
             {review.author?.charAt(0).toUpperCase()}
@@ -29,7 +27,6 @@ function ReviewCard({ review }) {
           </div>
         </div>
 
-        {/* Rating */}
         {review.author_details?.rating && (
           <div className="text-(--review-accent) font-semibold">
             ⭐ {review.author_details.rating}/10
@@ -37,7 +34,6 @@ function ReviewCard({ review }) {
         )}
       </div>
 
-      {/* Review */}
       <div
         className={`${
           isExpanded ? "" : "max-h-40 overflow-hidden"
@@ -48,7 +44,6 @@ function ReviewCard({ review }) {
         </p>
       </div>
 
-      {/* Read More / Show Less */}
       {isLongReview && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
