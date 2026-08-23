@@ -1,6 +1,11 @@
-function GenreFilter({ genres, selectedGenre, onGenreChange }) {
+function GenreFilter({
+  genres,
+  selectedGenre,
+  onGenreChange,
+}) {
   return (
     <div className="flex gap-2.5 flex-wrap py-5 scrollbar-none">
+
       <button
         className={`shrink-0 cursor-pointer rounded-full border px-4.5 py-2.25 text-sm transition-colors duration-200 ${
           selectedGenre === null
@@ -25,6 +30,7 @@ function GenreFilter({ genres, selectedGenre, onGenreChange }) {
           {genre.name}
         </button>
       ))}
+
     </div>
   );
 }

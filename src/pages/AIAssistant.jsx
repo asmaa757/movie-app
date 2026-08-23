@@ -16,10 +16,12 @@ function AIAssistant() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isQuotaError, setIsQuotaError] = useState(false);
-  const endRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   }, [messages, loading]);
 
   const sendText = async (text) => {
@@ -35,58 +37,35 @@ function AIAssistant() {
 
     try {
       const reply = await sendMessageToAssistant(updated);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: reply },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (err) {
       console.error("Assistant error:", err);
-
-      if (err.message.includes("429")) {
-        setIsQuotaError(true);
-        setError(
-          "We've reached the maximum number of requests allowed at the moment. Please try again later!"
-        );
-      } else {
-        setIsQuotaError(false);
-        setError(
-          "Something went wrong while getting a response. Please try again."
-        );
-      }
+      const isQuota = err.message.includes("429");
+      setIsQuotaError(isQuota);
+      setError(
+        isQuota
+          ? "We've reached the maximum number of requests allowed at the moment. Please try again later!"
+          : "Something went wrong while getting a response. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendText(input);
-    }
-  };
-
   return (
-    <div className="h-[calc(95vh-64px)] flex flex-col">
+    <div className="h-[calc(95vh-64px)] min-h-0 flex flex-col">
       {messages.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center px-4">
-          <h1 className="text-3xl font-semibold mb-6">
-            What can I help with?
-          </h1>
+          <h1 className="text-3xl font-semibold mb-6">What can I help with?</h1>
 
-          <ChatInput
-            input={input}
-            setInput={setInput}
-            onSend={sendText}
-            loading={loading}
-          />
+          <ChatInput input={input} setInput={setInput} onSend={sendText} loading={loading} />
 
           <div className="flex flex-wrap w-[50%] justify-center gap-2 mt-4">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => setInput(s)}
-                className="border border-(--border-filter) rounded-full px-4 py-2 text-sm text-(--text-secondary)
-                hover:bg-(--primary) hover:text-(--on-primary)"
+                className="border border-(--border-filter) rounded-full px-4 py-2 text-sm text-(--text-secondary) hover:bg-(--primary) hover:text-(--on-primary)"
               >
                 {s}
               </button>
@@ -96,9 +75,7 @@ function AIAssistant() {
           {error && (
             <p
               className={`mt-4 text-sm text-center ${
-                isQuotaError
-                  ? "text-(--quota-text)"
-                  : "text-(--error-text)"
+                isQuotaError ? "text-(--quota-text)" : "text-(--error-text)"
               }`}
             >
               {error}
@@ -107,17 +84,10 @@ function AIAssistant() {
         </div>
       ) : (
         <>
-          <div className="flex-1 overflow-y-auto px-4 py-6">
+          <div ref={chatContainerRef} className="flex-1 min-h-0 overflow-y-auto px-4 py-6">
             <div className="max-w-2xl mx-auto space-y-3">
               {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${
-                    msg.role === "user"
-                      ? "justify-end"
-                      : "justify-start"
-                  }`}
-                >
+                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[75%] px-4 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
                       msg.role === "user"
@@ -147,18 +117,11 @@ function AIAssistant() {
                   {error}
                 </div>
               )}
-
-              <div ref={endRef} />
             </div>
           </div>
 
-          <div className="px-4 pb-6">
-            <ChatInput
-              input={input}
-              setInput={setInput}
-              onSend={sendText}
-              loading={loading}
-            />
+          <div className="px-4 pb-6 shrink-0">
+            <ChatInput input={input} setInput={setInput} onSend={sendText} loading={loading} />
           </div>
         </>
       )}

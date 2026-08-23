@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function useFetch(
   fetchFunction,
   dependencies = [],
-  enabled = true
+  enabled = true,
+  keepPreviousData = false
 ) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState("");
+  const hasData = useRef(false);
 
   useEffect(() => {
     if (!enabled) {
       setLoading(false);
       setData(null);
+      hasData.current = false;
       return;
     }
 
@@ -20,22 +23,24 @@ function useFetch(
 
     const fetchData = async () => {
       try {
-        setLoading(true);
+        if (!keepPreviousData || !hasData.current) {
+          setLoading(true);
+        }
+
         setError("");
 
         const result = await fetchFunction();
 
         if (isMounted) {
           setData(result);
+          hasData.current = true;
+          setLoading(false);
         }
       } catch (err) {
         console.error(err);
 
         if (isMounted) {
           setError("Failed to load data.");
-        }
-      } finally {
-        if (isMounted) {
           setLoading(false);
         }
       }
@@ -48,7 +53,11 @@ function useFetch(
     };
   }, [...dependencies, enabled]);
 
-  return { data, loading, error };
+  return {
+    data,
+    loading,
+    error,
+  };
 }
 
 export default useFetch;

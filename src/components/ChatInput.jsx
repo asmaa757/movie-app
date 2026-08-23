@@ -1,11 +1,6 @@
 import { SendHorizontal } from "lucide-react";
 
-function ChatInput({
-  input,
-  setInput,
-  onSend,
-  loading = false,
-}) {
+function ChatInput({ input, setInput, onSend, loading = false }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -14,16 +9,7 @@ function ChatInput({
   };
 
   return (
-    <div
-      className="
-        w-full max-w-2xl mx-auto 
-        flex items-center gap-3 
-        border border-(--border)
-        focus-within:border-(--primary)
-        rounded-full px-5 py-3 
-        shadow-sm
-      "
-    >
+    <div className="w-full max-w-2xl mx-auto flex items-center gap-3 border border-(--border) focus-within:border-(--primary) rounded-full px-5 py-3 shadow-sm">
       <input
         type="text"
         value={input}
@@ -40,11 +26,7 @@ function ChatInput({
         className="rounded-full w-8 h-8 flex items-center justify-center"
       >
         <SendHorizontal
-          className={`w-10 h-10 ${
-            input.trim()
-              ? "text-(--primary)"
-              : "text-(--text-muted)"
-          }`}
+          className={`w-5 h-5 ${input.trim() ? "text-(--primary)" : "text-(--text-muted)"}`}
         />
       </button>
     </div>

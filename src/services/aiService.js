@@ -16,10 +16,7 @@ Rules:
 
 export async function sendMessageToAssistant(messages) {
   const contents = [
-    {
-      role: "user",
-      parts: [{ text: SYSTEM_PROMPT }],
-    },
+    { role: "user", parts: [{ text: SYSTEM_PROMPT }] },
     {
       role: "model",
       parts: [{ text: "Understood. I'm ready to help with movie and TV-related questions only." }],
@@ -36,11 +33,11 @@ export async function sendMessageToAssistant(messages) {
     body: JSON.stringify({ contents }),
   });
 
-    if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("Gemini API error:", response.status, errorBody);
-        throw new Error(`API request failed with status ${response.status}`);
-    }
+  if (!response.ok) {
+    const errorBody = await response.text();
+    console.error("Gemini API error:", response.status, errorBody);
+    throw new Error(`API request failed with status ${response.status}`);
+  }
 
   const data = await response.json();
   const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;

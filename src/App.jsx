@@ -1,8 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import MainLayout from "./layouts/MainLayout";
-import Movies from "./pages/Movies";
+import MediaPage from "./pages/MediaPage";
 import MediaDetails from "./pages/MediaDetails";
-import TVShows from "./pages/TVShows";
 import SearchResults from "./pages/SearchResults";
 import Wishlist from "./pages/Wishlist";
 import AIAssistant from "./pages/AIAssistant";
@@ -16,7 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Movies />,
+        element: <MediaPage type="movie" />,
+      },
+      {
+        path: "movies",
+        element: <MediaPage type="movie" />,
       },
       {
         path: "movies/:id",
@@ -24,7 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "tv-shows",
-        element: <TVShows />,
+        element: <MediaPage type="tv" />,
       },
       {
         path: "tv-shows/:id",
