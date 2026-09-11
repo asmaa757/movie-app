@@ -2,17 +2,28 @@ import { Heart } from "lucide-react";
 import { IMAGE_BASE_URL } from "../services/tmdbService";
 import { useWishlist } from "../hooks/useWishlist";
 
+function getRatingColor(rating) {
+  if (rating >= 70) return "#21d07a";
+  if (rating >= 40) return "#d2d534";
+  return "#db2360";
+}
+
 function MovieCard({ movie }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   const isFavorite = isInWishlist(movie.id);
   const title = movie.title || movie.name;
   const releaseDate = movie.release_date || movie.first_air_date;
+  const rating = Math.round(movie.vote_average * 10);
+  const ratingColor = getRatingColor(rating);
+
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - rating / 100);
 
   const handleFavoriteClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-
     toggleWishlist(movie);
   };
 
@@ -54,14 +65,37 @@ function MovieCard({ movie }) {
             color="var(--primary)"
           />
         </button>
+      </div>
 
-        <div
-          className="absolute bottom-1.25 left-1.25 w-11.25 h-11.25 
-          rounded-full bg-(--glass-bg) backdrop-blur-sm border-[3px] 
-          border-(--primary) text-(--text) flex items-center 
-          justify-center text-xs font-bold"
-        >
-          {Math.round(movie.vote_average * 10)}%
+      <div className="relative px-1.25">
+        <div className="absolute -top-5.5 left-1.25 w-11.25 h-11.25">
+          <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
+            <circle
+              cx="22"
+              cy="22"
+              r={radius}
+              fill="var(--bg-secondary)"
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth="3"
+            />
+            <circle
+              cx="22"
+              cy="22"
+              r={radius}
+              fill="none"
+              stroke={ratingColor}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+            />
+          </svg>
+          <span
+            className="absolute inset-0 flex items-center justify-center text-xs font-bold"
+            style={{ color: "var(--text)" }}
+          >
+            {rating}%
+          </span>
         </div>
       </div>
 

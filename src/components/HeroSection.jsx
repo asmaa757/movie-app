@@ -108,7 +108,7 @@ function HeroSection({ movies }) {
         left-2.5 md:left-5 w-9 h-9 md:w-10.5 md:h-10.5 
         rounded-full bg-(--glass-bg) backdrop-blur-md text-white 
         flex items-center justify-center cursor-pointer text-base 
-        transition-all duration-200 hover:bg-(--primary) hover:scale-110"
+        transition-all duration-200 hover:bg-(--primary) active:bg-(--primary-hover) hover:scale-110"
         onClick={handlePrevious}
         aria-label="Previous movie"
       >
@@ -120,7 +120,7 @@ function HeroSection({ movies }) {
         right-2.5 md:right-5 w-9 h-9 md:w-10.5 md:h-10.5 
         rounded-full bg-(--glass-bg) backdrop-blur-md text-white 
         flex items-center justify-center cursor-pointer text-base 
-        transition-all duration-200 hover:bg-(--primary) hover:scale-110"
+        transition-all duration-200 hover:bg-(--primary) active:bg-(--primary-hover) hover:scale-110"
         onClick={handleNext}
         aria-label="Next movie"
       >
