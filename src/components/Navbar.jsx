@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { NavLink } from "react-router";
 import { useWishlist } from "../hooks/useWishlist";
 import { useTheme } from "../hooks/useTheme";
-import { Heart, MonitorPlay, Sun, Moon } from "lucide-react";
+import { Heart, MonitorPlay, Sun, Moon, Menu, X } from "lucide-react";
 
 function Navbar() {
   const { wishlist } = useWishlist();
   const { isLight, toggleTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
 
   const linkClass = ({ isActive }) =>
     `relative flex items-center gap-1.5 text-(--text) text-[15px] font-semibold no-underline
@@ -14,53 +16,100 @@ function Navbar() {
     after:bg-(--primary) after:transition-all after:duration-200
     ${isActive ? "text-(--primary) after:w-full" : "after:w-0"}`;
 
+  // نفس الستايل بس للموبايل (من غير الـ underline بتاع after)
+  const mobileLinkClass = ({ isActive }) =>
+    `flex items-center gap-2 text-(--text) text-base font-semibold no-underline py-3 px-2
+    transition-colors duration-200 hover:text-(--primary)
+    ${isActive ? "text-(--primary)" : ""}`;
+
   return (
-    <nav className="sticky top-0 z-1000 w-full h-17.5 bg-(--navbar-bg) backdrop-blur-sm box-border flex items-center justify-between px-5">
+    <nav className="sticky top-0 z-1000 w-full bg-(--navbar-bg) backdrop-blur-sm box-border">
+      <div className="h-17.5 flex items-center justify-between px-5">
 
-      <NavLink
-        to="/"
-        className="text-(--primary) flex items-center gap-2 no-underline"
-      >
-        <MonitorPlay className="w-7 h-9" />
-
-        <span className="text-2xl font-extrabold">
-          MOVIE APP
-        </span>
-      </NavLink>
-
-      <div className="flex items-center gap-5">
-
-        <NavLink to="/" className={linkClass}>
-          Movies
-        </NavLink>
-
-        <NavLink to="/tv-shows" className={linkClass}>
-          TV Shows
-        </NavLink>
-
-        <NavLink to="/whishlist" className={linkClass}>
-          <Heart className="w-5 h-5 text-(--text) fill-current" />
-
-          <span>Wishlist</span>
-
-          <span className="min-w-5 h-5 px-1 flex text-white items-center justify-center bg-(--primary) rounded-full text-[11px] font-bold">
-            {wishlist.length}
-          </span>
-        </NavLink>
-
-        <NavLink to="/ai-assistant" className={linkClass}>
-          AI Assistant
-        </NavLink>
-
-        <button
-          onClick={toggleTheme}
-          className="border-none bg-transparent cursor-pointer text-(--text) hover:text-(--primary) transition-colors"
-          aria-label="Toggle theme"
+        <NavLink
+          to="/"
+          className="text-(--primary) flex items-center gap-2 no-underline"
+          onClick={() => setIsOpen(false)}
         >
-          {isLight ? <Moon size={20} /> : <Sun size={20} />}
-        </button>
+          <MonitorPlay className="w-7 h-9" />
+          <span className="text-2xl font-extrabold">MOVIE APP</span>
+        </NavLink>
 
+        {/* الروابط - ظاهرة بس من md فوق */}
+        <div className="hidden md:flex items-center gap-5">
+          <NavLink to="/" className={linkClass}>
+            Movies
+          </NavLink>
+
+          <NavLink to="/tv-shows" className={linkClass}>
+            TV Shows
+          </NavLink>
+
+          <NavLink to="/whishlist" className={linkClass}>
+            <Heart className="w-5 h-5 text-(--text) fill-current" />
+            <span>Wishlist</span>
+            <span className="min-w-5 h-5 px-1 flex text-white items-center justify-center bg-(--primary) rounded-full text-[11px] font-bold">
+              {wishlist.length}
+            </span>
+          </NavLink>
+
+          <NavLink to="/ai-assistant" className={linkClass}>
+            AI Assistant
+          </NavLink>
+
+          <button
+            onClick={toggleTheme}
+            className="border-none bg-transparent cursor-pointer text-(--text) hover:text-(--primary) transition-colors"
+            aria-label="Toggle theme"
+          >
+            {isLight ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+        </div>
+
+        {/* أزرار الموبايل: theme toggle + hamburger */}
+        <div className="flex md:hidden items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="border-none bg-transparent cursor-pointer text-(--text) hover:text-(--primary) transition-colors"
+            aria-label="Toggle theme"
+          >
+            {isLight ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="border-none bg-transparent cursor-pointer text-(--text)"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
+
+      {/* قائمة الموبايل - بتفتح تحت الـ navbar */}
+      {isOpen && (
+        <div className="md:hidden flex flex-col px-5 pb-4 bg-(--navbar-bg) border-t border-(--text)/10">
+          <NavLink to="/" className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+            Movies
+          </NavLink>
+
+          <NavLink to="/tv-shows" className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+            TV Shows
+          </NavLink>
+
+          <NavLink to="/whishlist" className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+            <Heart className="w-5 h-5 text-(--text) fill-current" />
+            <span>Wishlist</span>
+            <span className="min-w-5 h-5 px-1 flex text-white items-center justify-center bg-(--primary) rounded-full text-[11px] font-bold">
+              {wishlist.length}
+            </span>
+          </NavLink>
+
+          <NavLink to="/ai-assistant" className={mobileLinkClass} onClick={() => setIsOpen(false)}>
+            AI Assistant
+          </NavLink>
+        </div>
+      )}
     </nav>
   );
 }
