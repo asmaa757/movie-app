@@ -15,12 +15,12 @@ function Wishlist() {
           Watch list
         </h1>
 
-        <div className="flex flex-col items-center justify-center">
-          <HeartOff className="w-50 h-50 mb-10 fill-(--heart-off) text-(--heart-off)" />
+        <div className="flex flex-col items-center justify-center text-center">
+          <HeartOff className="w-32 h-32 sm:w-40 sm:h-40 md:w-50 md:h-50 mb-10 fill-(--heart-off) text-(--heart-off)" />
           <p className="text-lg">No Movies in Watch list</p>
           <Link
             to="/"
-            className="bg-(--primary) hover:bg-(--primary-hover) text-(--on-primary) px-20 py-2 my-5 rounded-md"
+            className="bg-(--primary) hover:bg-(--primary-hover) text-(--on-primary) px-10 sm:px-20 py-2 my-5 rounded-md"
           >
             Back to home
           </Link>
@@ -35,7 +35,7 @@ function Wishlist() {
         Watch list
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {wishlist.map((media) => {
           const title = media.title || media.name;
           const releaseDate = media.release_date || media.first_air_date;
@@ -45,16 +45,16 @@ function Wishlist() {
 
           return (
             <Link key={media.id} to={detailsPath}>
-              <div className="flex border border-(--primary) rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+              <div className="flex flex-col sm:flex-row border border-(--primary) rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
                 <img
                   src={`${IMAGE_BASE_URL}${media.poster_path}`}
                   alt={title}
-                  className="w-40 h-auto p-2 shrink-0 rounded-2xl"
+                  className="w-full h-56 sm:w-40 sm:h-auto object-cover sm:object-contain p-0 sm:p-2 shrink-0 rounded-t-2xl sm:rounded-2xl"
                 />
 
-                <div className="p-5 flex flex-col flex-1">
+                <div className="p-4 sm:p-5 flex flex-col flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h2 className="text-xl sm:text-2xl font-bold leading-tight">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold leading-tight">
                       {title}
                     </h2>
 
@@ -64,12 +64,12 @@ function Wishlist() {
                         e.stopPropagation();
                         toggleWishlist(media);
                       }}
-                      className="border-none bg-transparent cursor-pointer p-1 transition-transform hover:scale-115"
+                      className="border-none bg-transparent cursor-pointer p-1 shrink-0 transition-transform hover:scale-115"
                     >
                       <Heart
                         fill="var(--primary)"
                         color="var(--primary)"
-                        className="w-7 h-7"
+                        className="w-6 h-6 sm:w-7 sm:h-7"
                       />
                     </button>
                   </div>
@@ -85,7 +85,7 @@ function Wishlist() {
                     </span>
                   </div>
 
-                  <p className="mt-3 leading-relaxed line-clamp-3">
+                  <p className="mt-3 leading-relaxed line-clamp-3 text-sm sm:text-base">
                     {media.overview}
                   </p>
                 </div>
