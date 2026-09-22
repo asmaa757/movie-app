@@ -16,7 +16,6 @@ function Navbar() {
     after:bg-(--primary) after:transition-all after:duration-200
     ${isActive ? "text-(--primary) after:w-full" : "after:w-0"}`;
 
-  // نفس الستايل بس للموبايل (من غير الـ underline بتاع after)
   const mobileLinkClass = ({ isActive }) =>
     `flex items-center gap-2 text-(--text) text-base font-semibold no-underline py-3 px-2
     transition-colors duration-200 hover:text-(--primary)
@@ -35,7 +34,6 @@ function Navbar() {
           <span className="text-2xl font-extrabold">MOVIE APP</span>
         </NavLink>
 
-        {/* الروابط - ظاهرة بس من md فوق */}
         <div className="hidden md:flex items-center gap-5">
           <NavLink to="/" className={linkClass}>
             Movies
@@ -66,7 +64,6 @@ function Navbar() {
           </button>
         </div>
 
-        {/* أزرار الموبايل: theme toggle + hamburger */}
         <div className="flex md:hidden items-center gap-3">
           <button
             onClick={toggleTheme}
@@ -86,7 +83,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* قائمة الموبايل - بتفتح تحت الـ navbar */}
       {isOpen && (
         <div className="md:hidden flex flex-col px-5 pb-4 bg-(--navbar-bg) border-t border-(--text)/10">
           <NavLink to="/" className={mobileLinkClass} onClick={() => setIsOpen(false)}>
