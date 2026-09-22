@@ -1,9 +1,6 @@
-const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
 async function fetchTMDB(endpoint, params = {}) {
-  const query = new URLSearchParams({ api_key: API_KEY, ...params });
-  const response = await fetch(`${BASE_URL}${endpoint}?${query}`);
+  const query = new URLSearchParams({ endpoint, ...params });
+  const response = await fetch(`/api/tmdb?${query}`);
 
   if (!response.ok) throw new Error("Failed to fetch data");
 
